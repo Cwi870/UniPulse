@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniPulse - Your College Life Hub</title>
+    <!-- Tailwind CSS CDN for modern, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Google Fonts - Inter for professional and clean typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* All CSS from style.css and help-board.css combined here */
+
+        /* Apply Inter font globally and set a default text color */
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #333333; /* Dark Gray for text */
+            background-color: #F5F5F5; /* Light Gray for background */
+        }
+
+        /* Custom Tailwind configuration to integrate brand colors */
+        .custom-blue {
+            background-color: #00BFFF; /* Electric Blue */
+        }
+        .custom-teal {
+            background-color: #00CED1; /* Dark Turquoise/Teal */
+        }
+        .custom-coral {
+            background-color: #FF7F50; /* Coral */
+        }
+        .custom-yellow {
+            background-color: #FFD700; /* Gold/Sunshine Yellow */
+        }
+
+        /* Text color utilities */
+        .text-custom-blue {
+            color: #00BFFF;
+        }
+        .text-custom-coral {
+            color: #FF7F50;
+        }
+
+        /* Border color utility */
+        .border-custom-blue {
+            border-color: #00BFFF;
+        }
+
+        /* Shadow utility */
+        .shadow-custom-blue {
+            box-shadow: 0 4px 14px 0 rgba(0, 191, 255, 0.2);
+        }
+
+        /* New custom background colors for feature sections on index.html (main page content) */
+        .custom-bg-blue-light {
+            background-color: #E0F7FA; /* Very pale blue */
+        }
+        .custom-bg-yellow-light {
+            background-color: #FFFDE7; /* Very pale yellow */
+        }
+        .custom-bg-teal-light {
+            background-color: #E0FFFF; /* Very pale teal */
+        }
+
+        /* Smooth scrolling for anchor links (only applies on current page, though now it's all one page) */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Add a subtle hover effect for nav links */
+        .nav-link-hover:hover {
+            color: #00BFFF; /* Custom blue */
+            text-shadow: 0 0 5px rgba(0, 191, 255, 0.3); /* Subtle glow */
+        }
+
+        /* Styles specific to help-board.html (now integrated) */
+        .icon-button {
+            font-size: 1.5rem; /* Adjust icon size */
+            color: #888; /* Default icon color */
+            cursor: pointer;
+            transition: transform 0.1s ease-in-out, color 0.2s ease-in-out;
+            padding: 0.5rem; /* Add some padding for easier clicking */
+            border-radius: 50%; /* Make it round */
+        }
+        .icon-button:hover {
+            transform: scale(1.1);
+            color: #00BFFF; /* Electric Blue on hover */
+        }
+        .icon-button.active {
+            color: #FFD700; /* Gold/Sunshine Yellow when active */
+        }
+
+        /* Styles for page management */
+        .page-content {
+            display: none; /* Hide all pages by default */
+        }
+        .page-content.active {
+            display: block; /* Show active page */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header and Navigation Bar (Common to all pages) -->
+    <header class="bg-white shadow-sm py-4 px-6 md:px-8 lg:px-12 flex justify-between items-center rounded-b-lg">
+        <!-- Logo/Brand Name -->
+        <div class="flex items-center">
+            <svg class="w-8 h-8 mr-2 text-custom-blue" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 102 0V8a1 1 0 00-.445-.832l-1.5-1zm-2.672 2.02A1 1 0 006 10v2a1 1 0 102 0v-2a1 1 0 00-.445-.832l-1.5-1zm5.344 0A1 1 0 0012 10v2a1 1 0 102 0v-2a1 1 0 00-.445-.832l-1.5-1z" clip-rule="evenodd"></path>
+            </svg>
+            <a href="#" onclick="showPage('home-page', this)" class="text-2xl font-bold text-gray-800">UniPulse</a>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="hidden md:flex space-x-8">
+            <a href="#" onclick="showPage('home-page', this)" class="text-gray-600 hover:text-custom-blue font-medium transition-colors duration-200 nav-link-hover active-nav-link" data-page="home-page">Home</a>
+            <a href="#" onclick="showPage('find-school-page', this)" class="text-gray-600 hover:text-custom-blue font-medium transition-colors duration-200 nav-link-hover" data-page="find-school-page">Find Your School</a>
+            <a href="#" onclick="showPage('events-page', this)" class="text-gray-600 hover:text-custom-blue font-medium transition-colors duration-200 nav-link-hover" data-page="events-page">Events</a>
+            <a href="#" onclick="showPage('groups-page', this)" class="text-gray-600 hover:text-custom-blue font-medium transition-colors duration-200 nav-link-hover" data-page="groups-page">Groups</a>
+            <a href="#" onclick="showPage('help-board-page', this)" class="text-gray-600 hover:text-custom-blue font-medium transition-colors duration-200 nav-link-hover" data-page="help-board-page">Help Board</a>
+            <a href="#" onclick="showPage('resources-page', this)" class="text-gray-600 hover:text-custom-blue font-medium transition-colors duration-200 nav-link-hover" data-page="resources-page">Resources</a>
+        </nav>
+
+        <!-- User Actions / Mobile Menu Button -->
+        <div class="flex items-center space-x-4">
+            <a href="#" onclick="showPage('signup-page', this)" class="bg-custom-blue text-white px-5 py-2 rounded-full font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-lg shadow-custom-blue/30">Sign Up</a>
+            <!-- Mobile Menu Button (Hamburger Icon) -->
+            <button class="md:hidden text-gray-600 hover:text-custom-blue focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Area - All "pages" will be inside here -->
+    <div id="main-content-area">
+
+        <!-- 1. Home Page Content (from index.html) -->
+        <section id="home-page" class="page-content active">
+            <section id="home" class="relative bg-gradient-to-br from-custom-blue to-sky-400 text-white py-20 md:py-28 lg:py-36 text-center overflow-hidden rounded-b-lg shadow-xl">
+                <div class="container mx-auto px-6 relative z-10">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight mb-4 drop-shadow-md">
+                        Your College Life, Amplified.
+                    </h1>
+                    <p class="text-lg md:text-xl lg:text-2xl mb-8 max-w-3xl mx-auto opacity-90">
+                        Connect, discover, and thrive within your university community.
+                        UniPulse is the beating heart of your campus experience.
+                    </p>
+                    <a href="#features" class="inline-block bg-custom-coral text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-xl shadow-custom-coral/40">
+                        Explore Campus Life
+                    </a>
+                </div>
+                <div class="absolute top-0 left-0 w-full h-full opacity-20">
+                    <div class="absolute w-64 h-64 bg-white rounded-full -top-16 -left-16 blur-xl"></div>
+                    <div class="absolute w-80 h-80 bg-white rounded-full -bottom-24 -right-24 blur-xl"></div>
+                </div>
+            </section>
+
+            <section id="features" class="py-16 md:py-24 bg-white rounded-lg mx-4 md:mx-8 lg:mx-12 my-8 shadow-md">
+                <div class="container mx-auto px-6">
+                    <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-gray-800">What UniPulse Offers</h2>
+
+                    <!-- Feature 1: Event Discovery & Creation -->
+                    <div id="events-section-home" class="flex flex-col md:flex-row items-center justify-center mb-16 md:mb-24 p-6 rounded-lg custom-bg-blue-light bg-opacity-70">
+                        <div class="md:w-1/2 p-4 md:pr-8">
+                            <h3 class="text-2xl md:text-3xl font-semibold mb-4 text-custom-blue">Discover & Create Events</h3>
+                            <p class="text-gray-700 text-lg mb-4">
+                                Never miss out on campus happenings again! Browse parties, workshops, sports games, and more.
+                                Easily create your own events, invite friends, and manage RSVPs.
+                            </p>
+                            <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                <li>Filter by category, date, or popularity.</li>
+                                <li>RSVP and get timely reminders.</li>
+                                <li>Promote your club's next big gathering.</li>
+                            </ul>
+                            <a href="#" onclick="showPage('events-page', this)" class="inline-block mt-6 bg-custom-teal text-white px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-md shadow-custom-teal/30">Browse Events</a>
+                        </div>
+                        <div class="md:w-1/2 p-4 mt-8 md:mt-0">
+                            <img src="https://placehold.co/600x400/00BFFF/FFFFFF?text=Campus+Event" alt="Campus Event" class="rounded-lg shadow-lg w-full h-auto object-cover">
+                        </div>
+                    </div>
+
+                    <!-- Feature 2: Interest-Based Groups & Clubs -->
+                    <div id="groups-section-home" class="flex flex-col md:flex-row-reverse items-center justify-center mb-16 md:mb-24 p-6 rounded-lg custom-bg-yellow-light bg-opacity-70">
+                        <div class="md:w-1/2 p-4 md:pl-8">
+                            <h3 class="text-2xl md:text-3xl font-semibold mb-4 text-custom-blue">Connect in Interest Groups</h3>
+                            <p class="text-gray-700 text-lg mb-4">
+                                Find your tribe! Join or create groups based on your major, hobbies, dorm, or any shared interest.
+                                Collaborate on projects, plan meetups, and build lasting friendships.
+                            </p>
+                            <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                <li>Dedicated feeds and chat rooms for each group.</li>
+                                <li>Discover study partners for challenging courses.</li>
+                                <li>Connect with peers who share your passions.</li>
+                            </ul>
+                            <a href="#" onclick="showPage('groups-page', this)" class="inline-block mt-6 bg-custom-teal text-white px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-md shadow-custom-teal/30">Find Groups</a>
+                        </div>
+                        <div class="md:w-1/2 p-4 mt-8 md:mt-0">
+                            <img src="https://placehold.co/600x400/FF7F50/FFFFFF?text=Student+Group" alt="Student Group" class="rounded-lg shadow-lg w-full h-auto object-cover">
+                        </div>
+                    </div>
+
+                    <!-- Feature 3: "Need Help/Offer Help" Board -->
+                    <div id="help-board-section-home" class="flex flex-col md:flex-row items-center justify-center p-6 rounded-lg custom-bg-teal-light bg-opacity-70">
+                        <div class="md:w-1/2 p-4 md:pr-8">
+                            <h3 class="text-2xl md:text-3xl font-semibold mb-4 text-custom-blue">Campus Help Board</h3>
+                            <p class="text-gray-700 text-lg mb-4">
+                                Got a question? Need a hand? Or want to pay it forward? Our community board connects students
+                                who need assistance with those willing to offer it.
+                            </p>
+                            <ul class="list-disc list-inside text-gray-600 space-y-2">
+                                <li>Request tutors, rides, or notes.</li>
+                                <li>Offer your skills and help fellow students.</li>
+                                <li>A supportive community for every challenge.</li>
+                            </ul>
+                            <a href="#" onclick="showPage('help-board-page', this)" class="inline-block mt-6 bg-custom-teal text-white px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-md shadow-custom-teal/30">Get Help / Offer Help</a>
+                        </div>
+                        <div class="md:w-1/2 p-4 mt-8 md:mt-0">
+                            <img src="https://placehold.co/600x400/00CED1/FFFFFF?text=Help+Community" alt="Help Community" class="rounded-lg shadow-lg w-full h-auto object-cover">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Call to Action Section (from index.html) -->
+            <section class="bg-custom-blue text-white py-16 md:py-20 text-center rounded-lg mx-4 md:mx-8 lg:mx-12 my-8 shadow-xl">
+                <div class="container mx-auto px-6">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-4">Ready to Experience UniPulse?</h2>
+                    <p class="text-lg md:text-xl mb-8 max-w-2xl mx-auto opacity-90">
+                        Join thousands of students already connecting, discovering, and thriving on campus.
+                    </p>
+                    <a href="#" onclick="showPage('signup-page', this)" class="inline-block bg-custom-coral text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-xl shadow-custom-coral/40">
+                        Sign Up for Free
+                    </a>
+                </div>
+            </section>
+        </section>
+
+        <!-- 2. Find Your School Page Content (from find-school.html) -->
+        <section id="find-school-page" class="page-content">
+            <main class="container mx-auto px-6 py-12 md:py-20 text-center">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-custom-blue mb-8">Find Your School</h1>
+                <p class="text-lg text-gray-700 max-w-2xl mx-auto mb-12">
+                    Enter your university or college name to connect with your campus community on UniPulse!
+                </p>
+
+                <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-md">
+                    <div class="flex flex-col md:flex-row gap-4 mb-6">
+                        <input type="text" id="schoolSearch" placeholder="e.g., University of California, Berkeley" class="flex-grow p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom-blue text-gray-700">
+                        <button onclick="searchSchool()" class="bg-custom-teal text-white px-6 py-3 rounded-md font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-md shadow-custom-teal/30">
+                            Search
+                        </button>
+                    </div>
+
+                    <div id="searchResults" class="text-left mt-8">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4">Search Results:</h3>
+                        <!-- Placeholder for dynamic search results -->
+                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                            <p class="text-gray-600">No results yet. Try searching for your school!</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </section>
+
+        <!-- 3. Events Page Content (from events.html) -->
+        <section id="events-page" class="page-content">
+            <main class="container mx-auto px-6 py-12 md:py-20">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-8 text-custom-blue">Campus Events</h1>
+                <p class="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-12">
+                    Discover all the exciting happenings on and around campus. From academic workshops to social gatherings, find your next adventure here!
+                </p>
+
+                <!-- Event Filters Section -->
+                <div class="flex flex-wrap justify-center gap-4 mb-12 p-6 bg-white rounded-lg shadow-md">
+                    <div class="w-full md:w-auto">
+                        <label for="eventType" class="block text-sm font-medium text-gray-700 mb-1">Event Type</label>
+                        <select id="eventType" class="w-full md:w-48 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom-blue">
+                            <option value="">All Types</option>
+                            <option value="social">Social</option>
+                            <option value="academic">Academic</option>
+                            <option value="sports">Sports</option>
+                            <option value="arts">Arts & Culture</option>
+                            <option value="volunteer">Volunteer</option>
+                        </select>
+                    </div>
+                    <div class="w-full md:w-auto">
+                        <label for="community" class="block text-sm font-medium text-gray-700 mb-1">Community Focus</label>
+                        <select id="community" class="w-full md:w-48 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom-blue">
+                            <option value="">All Communities</option>
+                            <option value="native">Native American Student Assoc.</option>
+                            <option value="hispanic">Hispanic Student Union</option>
+                            <option value="lgbtq">LGBTQ+ Alliance</option>
+                            <option value="international">International Student Org.</option>
+                            <option value="general">General Campus</option>
+                        </select>
+                    </div>
+                    <div class="w-full md:w-auto">
+                        <label for="dormHall" class="block text-sm font-medium text-gray-700 mb-1">Dorm Hall / Location</label>
+                        <select id="dormHall" class="w-full md:w-48 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom-blue">
+                            <option value="">All Locations</option>
+                            <option value="north-hall">North Hall</option>
+                            <option value="south-hall">South Hall</option>
+                            <option value="east-residence">East Residence</option>
+                            <option value="west-campus">West Campus Apartments</option>
+                            <option value="library">Library</option>
+                            <option value="union">Student Union</option>
+                        </select>
+                    </div>
+                    <div class="w-full md:w-auto flex items-end">
+                        <button class="w-full md:w-auto bg-custom-blue text-white px-6 py-2 rounded-md font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-md shadow-custom-blue/30">Apply Filters</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Event Card Example 1: General Social Event -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                        <img src="https://placehold.co/400x250/00BFFF/FFFFFF?text=Concert+Night" alt="Concert Night" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Spring Concert Series</h3>
+                            <p class="text-custom-teal text-sm mb-1">Type: Social | Community: General Campus</p>
+                            <p class="text-custom-teal text-sm mb-3">April 25, 2025 | 7:00 PM | Campus Green</p>
+                            <p class="text-gray-600 text-sm">Join us for a night of live music featuring local bands and student performers. Food trucks will be on site!</p>
+                            <button class="mt-4 bg-custom-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90">RSVP Now</button>
+                        </div>
+                    </div>
+
+                    <!-- Event Card Example 2: Academic Workshop -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                        <img src="https://placehold.co/400x250/FF7F50/FFFFFF?text=Study+Workshop" alt="Study Workshop" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Effective Study Habits Workshop</h3>
+                            <p class="text-custom-teal text-sm mb-1">Type: Academic | Location: Library Auditorium</p>
+                            <p class="text-custom-teal text-sm mb-3">May 2, 2025 | 3:00 PM | Library Auditorium</p>
+                            <p class="text-gray-600 text-sm">Learn proven techniques to improve your study efficiency and ace your exams. Free snacks provided!</p>
+                            <button class="mt-4 bg-custom-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90">Learn More</button>
+                        </div>
+                    </div>
+
+                    <!-- Event Card Example 3: Sports Event -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                        <img src="https://placehold.co/400x250/00CED1/FFFFFF?text=Sports+Game" alt="Sports Game" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Annual Intramural Soccer Final</h3>
+                            <p class="text-custom-teal text-sm mb-1">Type: Sports | Community: General Campus</p>
+                            <p class="text-custom-teal text-sm mb-3">May 10, 2025 | 6:00 PM | Campus Field</p>
+                            <p class="text-gray-600 text-sm">Come cheer on your favorite teams as they battle for the championship title!</p>
+                            <button class="mt-4 bg-custom-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90">View Brackets</button>
+                        </div>
+                    </div>
+
+                    <!-- New Event Card Example 4: Native American Student Association Gathering -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                        <img src="https://placehold.co/400x250/A0522D/FFFFFF?text=Native+Gathering" alt="Native American Student Association Gathering" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Native American Culture Night</h3>
+                            <p class="text-custom-teal text-sm mb-1">Type: Arts & Culture | Community: Native American Student Assoc.</p>
+                            <p class="text-custom-teal text-sm mb-3">May 15, 2025 | 6:30 PM | Student Union Ballroom</p>
+                            <p class="text-gray-600 text-sm">Celebrate Native American heritage with traditional music, dance, and storytelling. All are welcome!</p>
+                            <button class="mt-4 bg-custom-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90">Attend</button>
+                        </div>
+                    </div>
+
+                    <!-- New Event Card Example 5: Hispanic Student Union Fiesta -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                        <img src="https://placehold.co/400x250/FF8C00/FFFFFF?text=Hispanic+Fiesta" alt="Hispanic Student Union Fiesta" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">HSU Annual Fiesta</h3>
+                            <p class="text-custom-teal text-sm mb-1">Type: Social | Community: Hispanic Student Union</p>
+                            <p class="text-custom-teal text-sm mb-3">May 20, 2025 | 5:00 PM | Campus Quad</p>
+                            <p class="text-gray-600 text-sm">Enjoy delicious food, vibrant music, and cultural performances at our annual celebration!</p>
+                            <button class="mt-4 bg-custom-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90">Join the Fun</button>
+                        </div>
+                    </div>
+
+                    <!-- New Event Card Example 6: North Hall Study Session -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                        <img src="https://placehold.co/400x250/6A5ACD/FFFFFF?text=Dorm+Study" alt="North Hall Study Session" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">North Hall Group Study: Finals Prep</h3>
+                            <p class="text-custom-teal text-sm mb-1">Type: Academic | Location: North Hall Lounge</p>
+                            <p class="text-custom-teal text-sm mb-3">May 28, 2025 | 8:00 PM | North Hall Lounge</p>
+                            <p class="text-gray-600 text-sm">Collaborative study session for all North Hall residents preparing for finals. Bring your notes and questions!</p>
+                            <button class="mt-4 bg-custom-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90">RSVP</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-16">
+                    <button class="bg-custom-coral text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-xl shadow-custom-coral/40">
+                        Submit Your Event
+                    </button>
+                </div>
+            </main>
+        </section>
+
+        <!-- 4. Groups Page Content (from groups.html) -->
+        <section id="groups-page" class="page-content">
+            <main class="container mx-auto px-6 py-12 md:py-20">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-8 text-custom-blue">Interest Groups</h1>
+                <p class="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-12">
+                    Connect with students who share your passions! Find study buddies, club members, or just new friends.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Group Card Example 1 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                        <img src="https://placehold.co/400x250/FFD700/333333?text=Coding+Club" alt="Coding Club" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Campus Coders United</h3>
+                            <p class="text-custom-teal text-sm mb-3">250 Members | Weekly Meetups</p>
+                            <p class="text-gray-600 text-sm">A group for all coding enthusiasts, from beginners to advanced developers. Share projects, learn new languages, and collaborate!</p>
+                            <button class="mt-4 bg-custom-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90 transition-all duration-200">Join Group</button>
+                        </div>
+                    </div>
+
+                    <!-- Group Card Example 2 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                        <img src="https://placehold.co/400x250/FF7F50/FFFFFF?text=Book+Club" alt="Book Club" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">The Page Turners Book Club</h3>
+                            <p class="text-custom-teal text-sm mb-3">85 Members | Bi-weekly Discussions</p>
+                            <p class="text-gray-600 text-sm">Love reading? Join our book club to discuss diverse genres, meet fellow readers, and expand your literary horizons.</p>
+                            <button class="mt-4 bg-custom-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90 transition-all duration-200">Join Group</button>
+                        </div>
+                    </div>
+
+                    <!-- Group Card Example 3 -->
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden transform transition-transform duration-300 hover:scale-105">
+                        <img src="https://placehold.co/400x250/00CED1/FFFFFF?text=Photography+Club" alt="Photography Club" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-semibold text-gray-800 mb-2">Lens & Light Photography</h3>
+                            <p class="text-custom-teal text-sm mb-3">120 Members | Photo Walks & Workshops</p>
+                            <p class="text-gray-600 text-sm">Capture campus beauty and beyond! A group for photographers of all levels to share tips, techniques, and stunning shots.</p>
+                            <button class="mt-4 bg-custom-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90 transition-all duration-200">Join Group</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-16">
+                    <button class="bg-custom-coral text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-xl shadow-custom-coral/40">
+                        Create Your Own Group
+                    </button>
+                </div>
+            </main>
+        </section>
+
+        <!-- 5. Help Board Page Content (from help-board.html) -->
+        <section id="help-board-page" class="page-content">
+            <main class="container mx-auto px-6 py-12 md:py-20">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-8 text-custom-blue">Campus Help Board</h1>
+                <p class="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-12">
+                    Need a hand? Or want to offer one? This is your community hub for support, questions, and favors.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Help Request Example 1 -->
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Looking for a Calculus I Tutor</h3>
+                        <p class="text-custom-teal text-sm mb-3">Posted by: Jane D. | 2 hours ago</p>
+                        <p class="text-gray-600 text-sm">Struggling with Calc I derivatives. Need someone who can explain concepts clearly. Flexible on time and willing to pay!</p>
+                        <div class="flex items-center justify-between mt-4">
+                            <button class="bg-custom-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90">Offer Help</button>
+                            <button class="icon-button" onclick="toggleIcon(this)"><i class="fas fa-thumbs-up"></i></button>
+                        </div>
+
+                        <!-- Comment Section -->
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-3">Comments</h4>
+                            <!-- Existing Comment 1 -->
+                            <div class="bg-gray-50 p-3 rounded-lg mb-3">
+                                <p class="text-sm font-medium text-gray-800">John M. <span class="text-gray-500 text-xs ml-2">1 hour ago</span></p>
+                                <p class="text-gray-700 text-sm">I can help with Calc I! I took it last semester and got an A. DM me, we can set up a session.</p>
+                            </div>
+                            <!-- Existing Comment 2 -->
+                            <div class="bg-gray-50 p-3 rounded-lg mb-3">
+                                <p class="text-sm font-medium text-gray-800">Sarah K. <span class="text-gray-500 text-xs ml-2">30 mins ago</span></p>
+                                <p class="text-gray-700 text-sm">Check out the math tutoring center in the library too, they have free drop-in hours!</p>
+                            </div>
+                            <!-- Add New Comment Input -->
+                            <div class="mt-4">
+                                <input type="text" placeholder="Add a comment..." class="w-full p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-custom-blue">
+                                <button class="mt-2 bg-custom-teal text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-opacity-90">Post Comment</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Help Offer Example 1 -->
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Offering Rides to Grocery Store</h3>
+                        <p class="text-custom-teal text-sm mb-3">Posted by: Mark S. | 4 hours ago</p>
+                        <p class="text-gray-600 text-sm">Have extra space in my car for grocery runs every Tuesday afternoon. DM me if you need a ride!</p>
+                        <div class="flex items-center justify-between mt-4">
+                            <button class="bg-custom-teal text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90">Connect</button>
+                            <button class="icon-button" onclick="toggleIcon(this)"><i class="fas fa-heart"></i></button>
+                        </div>
+
+                        <!-- Comment Section -->
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-3">Comments</h4>
+                            <!-- Existing Comment 1 -->
+                            <div class="bg-gray-50 p-3 rounded-lg mb-3">
+                                <p class="text-sm font-medium text-gray-800">Emily R. <span class="text-gray-500 text-xs ml-2">2 hours ago</span></p>
+                                <p class="text-gray-700 text-sm">This is so helpful, Mark! I always struggle with groceries. I'll DM you.</p>
+                            </div>
+                            <!-- Add New Comment Input -->
+                            <div class="mt-4">
+                                <input type="text" placeholder="Add a comment..." class="w-full p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-custom-blue">
+                                <button class="mt-2 bg-custom-teal text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-opacity-90">Post Comment</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Help Request Example 2 -->
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Lost my Chemistry Textbook</h3>
+                        <p class="text-custom-teal text-sm mb-3">Posted by: Alex P. | Yesterday</p>
+                        <p class="text-gray-600 text-sm">Lost my CHEM 101 textbook (blue cover) somewhere near the science building yesterday. If found, please contact me!</p>
+                        <div class="flex items-center justify-between mt-4">
+                            <button class="bg-custom-blue text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90">I Found It!</button>
+                            <button class="icon-button" onclick="toggleIcon(this)"><i class="fas fa-check-circle"></i></button>
+                        </div>
+
+                        <!-- Comment Section -->
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-3">Comments</h4>
+                            <!-- Existing Comment 1 -->
+                            <div class="bg-gray-50 p-3 rounded-lg mb-3">
+                                <p class="text-sm font-medium text-gray-800">David L. <span class="text-gray-500 text-xs ml-2">Yesterday</span></p>
+                                <p class="text-gray-700 text-sm">I saw a blue textbook near the benches outside the science building this morning. Check with lost and found there!</p>
+                            </div>
+                            <!-- Add New Comment Input -->
+                            <div class="mt-4">
+                                <input type="text" placeholder="Add a comment..." class="w-full p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-custom-blue">
+                                <button class="mt-2 bg-custom-teal text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-opacity-90">Post Comment</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Help Offer Example 2 -->
+                    <div class="bg-white rounded-lg shadow-md p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Selling gently used Mini-Fridge</h3>
+                        <p class="text-custom-teal text-sm mb-3">Posted by: Emily R. | 3 days ago</p>
+                        <p class="text-gray-600 text-sm">Moving out and selling my mini-fridge, perfect for dorms! Good condition, negotiable price. Pick up only.</p>
+                        <div class="flex items-center justify-between mt-4">
+                            <button class="bg-custom-teal text-white px-4 py-2 rounded-full text-sm font-semibold hover:bg-opacity-90">View Item</button>
+                            <button class="icon-button" onclick="toggleIcon(this)"><i class="fas fa-star"></i></button>
+                        </div>
+
+                        <!-- Comment Section -->
+                        <div class="mt-6 pt-4 border-t border-gray-200">
+                            <h4 class="text-lg font-semibold text-gray-800 mb-3">Comments</h4>
+                            <!-- Existing Comment 1 -->
+                            <div class="bg-gray-50 p-3 rounded-lg mb-3">
+                                <p class="text-sm font-medium text-gray-800">Chris T. <span class="text-gray-500 text-xs ml-2">2 days ago</span></p>
+                                <p class="text-gray-700 text-sm">How much are you asking for it? And what's the capacity?</p>
+                            </div>
+                            <!-- Add New Comment Input -->
+                            <div class="mt-4">
+                                <input type="text" placeholder="Add a comment..." class="w-full p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-custom-blue">
+                                <button class="mt-2 bg-custom-teal text-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-opacity-90">Post Comment</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-16">
+                    <button class="bg-custom-coral text-white px-8 py-4 rounded-full text-lg font-bold hover:bg-opacity-90 transition-all duration-300 transform hover:scale-105 shadow-xl shadow-custom-coral/40">
+                        Post a Request or Offer
+                    </button>
+                </div>
+            </main>
+        </section>
+
+        <!-- 6. Resources Page Content (from resources.html) -->
+        <section id="resources-page" class="page-content">
+            <main class="container mx-auto px-6 py-12 md:py-20">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-8 text-custom-blue">Campus Resources</h1>
+                <p class="text-lg text-gray-700 text-center max-w-3xl mx-auto mb-12">
+                    Find quick links and essential information for all university services and support.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Resource Card Example 1 -->
+                    <div class="bg-white rounded-lg shadow-md p-6 transform transition-transform duration-300 hover:scale-105">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Academic Advising</h3>
+                        <p class="text-gray-600 text-sm mb-4">Get guidance on course selection, degree planning, and academic success strategies.</p>
+                        <a href="#" class="text-custom-blue hover:underline font-medium">Visit Website &rarr;</a>
+                    </div>
+
+                    <!-- Resource Card Example 2 -->
+                    <div class="bg-white rounded-lg shadow-md p-6 transform transition-transform duration-300 hover:scale-105">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Health Services</h3>
+                        <p class="text-gray-600 text-sm mb-4">Access medical care, mental health counseling, and wellness programs.</p>
+                        <a href="#" class="text-custom-blue hover:underline font-medium">Learn More &rarr;</a>
+                    </div>
+
+                    <!-- Resource Card Example 3 -->
+                    <div class="bg-white rounded-lg shadow-md p-6 transform transition-transform duration-300 hover:scale-105">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Career Center</h3>
+                        <p class="text-gray-600 text-sm mb-4">Explore career paths, find internships, and prepare for job interviews.</p>
+                        <a href="#" class="text-custom-blue hover:underline font-medium">Explore Opportunities &rarr;</a>
+                    </div>
+
+                    <!-- Resource Card Example 4 -->
+                    <div class="bg-white rounded-lg shadow-md p-6 transform transition-transform duration-300 hover:scale-105">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">University Library</h3>
+                        <p class="text-gray-600 text-sm mb-4">Access research materials, study spaces, and librarian support.</p>
+                        <a href="#" class="text-custom-blue hover:underline font-medium">Check Hours &rarr;</a>
+                    </div>
+
+                    <!-- Resource Card Example 5 -->
+                    <div class="bg-white rounded-lg shadow-md p-6 transform transition-transform duration-300 hover:scale-105">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">IT Support</h3>
+                        <p class="text-gray-600 text-sm mb-4">Get help with campus Wi-Fi, software, and technical issues.</p>
+                        <a href="#" class="text-custom-blue hover:underline font-medium">Get Help &rarr;</a>
+                    </div>
+
+                    <!-- Resource Card Example 6 -->
+                    <div class="bg-white rounded-lg shadow-md p-6 transform transition-transform duration-300 hover:scale-105">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-2">Student Housing</h3>
+                        <p class="text-gray-600 text-sm mb-4">Information on dorms, off-campus living, and housing policies.</p>
+                        <a href="#" class="text-custom-blue hover:underline font-medium">View Options &rarr;</a>
+                    </div>
+                </div>
+            </main>
+        </section>
+
+        <!-- 7. Sign Up Page Content (from signup.html) -->
+        <section id="signup-page" class="page-content">
+            <main class="container mx-auto px-6 py-12 md:py-20 flex items-center justify-center min-h-[calc(100vh-200px)]">
+                <div class="bg-white rounded-lg shadow-xl p-8 md:p-12 max-w-md w-full text-center">
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-custom-blue mb-6">Join UniPulse Today!</h1>
+                    <p class="text-lg text-gray-700 mb-8">Unlock your full campus experience. It's quick and easy!</p>
+
+                    <form>
+                        <div class="mb-4">
+                            <input type="text" placeholder="Full Name" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom-blue" required>
+                        </div>
+                        <div class="mb-4">
+                            <input type="email" placeholder="Your University Email (@university.edu)" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom-blue" required>
+                        </div>
+                        <div class="mb-6">
+                            <input type="password" placeholder="Password" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-custom-blue" required>
+                        </div>
+                        <button type="submit" class="w-full bg-custom-blue text-white px-6 py-3 rounded-full font-semibold hover:bg-opacity-90 transition-all duration-200 shadow-lg shadow-custom-blue/30">Create Account</button>
+                    </form>
+
+                    <p class="text-sm text-gray-600 mt-6">
+                        By signing up, you agree to our <a href="#" class="text-custom-teal hover:underline">Terms of Service</a> and <a href="#" class="text-custom-teal hover:underline">Privacy Policy</a>.
+                    </p>
+                </div>
+            </main>
+        </section>
+
+    </div> <!-- End of #main-content-area -->
+
+    <!-- Footer (Common to all pages) -->
+    <footer class="bg-gray-800 text-white py-8 px-6 md:px-8 lg:px-12 text-center rounded-t-lg">
+        <div class="container mx-auto">
+            <p class="mb-4">&copy; 2025 UniPulse. All rights reserved.</p>
+            <nav class="flex justify-center space-x-6">
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Privacy Policy</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Terms of Service</a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-200">Contact Us</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for showing/hiding pages
+        function showPage(pageId, clickedElement = null) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show the requested page
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Update active state in navigation
+            document.querySelectorAll('.nav-link-hover').forEach(link => {
+                link.classList.remove('text-custom-blue', 'font-bold');
+                link.classList.add('text-gray-600', 'font-medium');
+            });
+
+            if (clickedElement) {
+                clickedElement.classList.add('text-custom-blue', 'font-bold');
+                clickedElement.classList.remove('text-gray-600', 'font-medium');
+            } else {
+                // Handle initial load or direct ID call for 'Home'
+                const homeLink = document.querySelector('[data-page="home-page"]');
+                if (homeLink) {
+                    homeLink.classList.add('text-custom-blue', 'font-bold');
+                    homeLink.classList.remove('text-gray-600', 'font-medium');
+                }
+            }
+
+            // Scroll to the top of the content area for a fresh "page" view
+            document.getElementById('main-content-area').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // JavaScript for toggling icon state (from help-board.html)
+        function toggleIcon(button) {
+            button.classList.toggle('active');
+            // You could add logic here to send the reaction to a backend
+        }
+
+        // JavaScript for school search (from find-school.html)
+        function searchSchool() {
+            const searchTerm = document.getElementById('schoolSearch').value.trim();
+            const resultsDiv = document.getElementById('searchResults');
+            const resultsContent = resultsDiv.querySelector('div'); // The inner div for results
+
+            resultsContent.innerHTML = ''; // Clear previous results
+
+            if (searchTerm === '') {
+                resultsContent.innerHTML = '<p class="text-gray-600">Please enter a school name to search.</p>';
+                return;
+            }
+
+            // Simulate a search (in a real app, this would be an API call)
+            const mockSchools = [
+                { name: 'University of California, Berkeley', students: '45,000+' },
+                { name: 'Stanford University', students: '17,000+' },
+                { name: 'University of Washington', students: '50,000+' },
+                { name: 'Arizona State University', students: '100,000+' },
+                { name: 'University of Arizona', students: '49,000+' },
+                { name: 'Harvard University', students: '20,000+' }
+            ];
+
+            const filteredSchools = mockSchools.filter(school =>
+                school.name.toLowerCase().includes(searchTerm.toLowerCase())
+            );
+
+            if (filteredSchools.length > 0) {
+                filteredSchools.forEach(school => {
+                    const schoolCard = `
+                        <div class="mb-4 p-3 bg-white rounded-md shadow-sm border border-gray-100">
+                            <h4 class="text-lg font-semibold text-custom-blue">${school.name}</h4>
+                            <p class="text-gray-700 text-sm">Students: ${school.students}</p>
+                            <button class="mt-2 bg-custom-coral text-white px-4 py-2 rounded-full text-sm hover:bg-opacity-90">Select School</button>
+                        </div>
+                    `;
+                    resultsContent.innerHTML += schoolCard;
+                });
+            } else {
+                resultsContent.innerHTML = `<p class="text-gray-600">No schools found matching "${searchTerm}". Please try a different name.</p>`;
+            }
+        }
+
+        // Show the home page on initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage('home-page', document.querySelector('[data-page="home-page"]'));
+        });
+    </script>
+
+</body>
+</html>
